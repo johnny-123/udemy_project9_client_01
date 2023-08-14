@@ -96,6 +96,24 @@ class CourseService {
       }
     );
   }
+  quit(_id) {
+    let token;
+    if (localStorage.getItem("user")) {
+      token = JSON.parse(localStorage.getItem("user")).token;
+    } else {
+      token = "";
+    }
+    console.log(API_URL + "/student/" + _id);
+    return axios.patch(
+      API_URL + "/student/" + _id,
+      {},
+      {
+        headers: {
+          Authorization: token,
+        },
+      }
+    );
+  }
   delete(_id) {
     console.log(API_URL + "/" + _id);
     let token;

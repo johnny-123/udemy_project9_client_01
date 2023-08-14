@@ -66,7 +66,7 @@ const RegisterComponent = () => {
           />
         </div>
         <br />
-        <div className="form-group">
+        {/* <div className="form-group">
           <label htmlFor="password">身份：</label>
           <input
             onChange={handleChangeRole}
@@ -75,6 +75,35 @@ const RegisterComponent = () => {
             placeholder="只能填入student或是instructor這兩個選項其一"
             name="role"
           />
+        </div> */}
+        <div className="form-group">
+          <label htmlFor="password">身份：</label>
+          <div className="form-check form-check-inline">
+            <input
+              onChange={handleChangeRole}
+              type="radio"
+              className="form-check-input"
+              id="studentRadio"
+              name="role"
+              value="student"
+            />
+            <label className="form-check-label" htmlFor="studentRadio">
+              student
+            </label>
+          </div>
+          <div className="form-check form-check-inline">
+            <input
+              onChange={handleChangeRole}
+              type="radio"
+              className="form-check-input"
+              id="instructorRadio"
+              name="role"
+              value="instructor"
+            />
+            <label className="form-check-label" htmlFor="instructorRadio">
+              instructor
+            </label>
+          </div>
         </div>
         <br />
         <button onClick={handleRegister} className="btn btn-primary">

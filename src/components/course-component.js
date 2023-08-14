@@ -15,6 +15,7 @@ const CourseComponent = ({
 
   const [courseData, setCourseData] = useState(null);
   const [ModifyFlag, setModifyFlag] = useState(false);
+  let [message, setMessage] = useState("");
 
   useEffect(() => {
     let _id;
@@ -42,6 +43,7 @@ const CourseComponent = ({
       }
     }
   }, []);
+  useEffect(() => {}, [courseData]);
 
   const handleModifyFlag = () => {
     console.log("請選擇要修改的課程");
@@ -55,6 +57,30 @@ const CourseComponent = ({
     setCurrentCourse(course);
     navigation("/ModifyCourse");
   };
+  const quitCourse = ({ course }) => {
+    let _id;
+    if (currentUser) {
+      _id = currentUser.user._id;
+      courseService
+        .quit(course._id)
+        .then(() => {
+          window.alert("已退出該課程");
+          courseService
+            .getEnrolledCourses(_id)
+            .then((data) => {
+              setCourseData(data.data);
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        })
+        .catch((error) => {
+          console.log(error.response);
+          setMessage(error.response.data);
+        });
+    }
+  };
+
   return (
     <div style={{ padding: "3rem" }}>
       {!currentUser && (
@@ -81,7 +107,7 @@ const CourseComponent = ({
           )}
           {ModifyFlag && <h1>修改課程頁面，點選要修改的課程內容</h1>}
           {ModifyFlag && (
-            <button className="btn btn-light btn-lg" onClick={handleModifyFlag}>
+            <button className="btn btn-dark btn-lg" onClick={handleModifyFlag}>
               返回
             </button>
           )}
@@ -116,6 +142,18 @@ const CourseComponent = ({
                         }}
                       >
                         修改該課程資訊
+                      </button>
+                    )}
+                    {currentUser.user.role === "student" && (
+                      <button
+                        style={{ display: "block" }}
+                        className="btn btn-warning btn-lg mx-auto"
+                        onClick={() => {
+                          console.log(course);
+                          quitCourse({ course });
+                        }}
+                      >
+                        退出該課程
                       </button>
                     )}
                   </p>
